@@ -1,4 +1,4 @@
-# pithos
+# Vertica
 
 ## Vertica Docker Image
 
