@@ -32,7 +32,7 @@ vertica_proper_shutdown() {
 }
 
 fix_filesystem_permissions() {
-  mkdir -p $VERTICA_DATA $VERTICA_CATALOG
+  mkdir -p $VERTICA_CATALOG $VERTICA_CONFIG $VERTICA_DATA
   chown -R dbadmin:verticadba "$VERTICA_DIR"
 
   chown dbadmin:verticadba /opt/vertica/config/admintools.conf
