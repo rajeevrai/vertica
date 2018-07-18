@@ -1,4 +1,4 @@
-FROM debian:9.2
+FROM debian:9.5
 
 LABEL maintainer="rajeev.rai.4283@gmail.com"
 
