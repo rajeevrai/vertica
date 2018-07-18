@@ -1,8 +1,8 @@
-#!/usr/local/bin/dumb-init /bin/sh
+#!/usr/local/bin/dumb-init /bin/bash
 set -e
 
 # Vertica should be shut down properly
-function shut_down() {
+shut_down() {
   echo "Shutting Down"
   vertica_proper_shutdown
 
@@ -14,7 +14,7 @@ function shut_down() {
   STOP_LOOP="true"
 }
 
-function vertica_proper_shutdown() {
+vertica_proper_shutdown() {
   echo "Run Tuple Mover to move all projections from WOS to ROS"
   gosu dbadmin /opt/vertica/bin/vsql -d $VERTICA_DB -w $VERTICA_PSWD -U dbadmin -c "SELECT DO_TM_TASK('moveout');"
 
@@ -31,13 +31,14 @@ function vertica_proper_shutdown() {
   gosu dbadmin /opt/vertica/bin/admintools -t stop_db -i -p $VERTICA_PSWD -d $VERTICA_DB
 }
 
-function fix_filesystem_permissions() {
-  mkdir -p $VERTICA_DATA $VERTICA_CATALOG
+fix_filesystem_permissions() {
+  mkdir -p $VERTICA_CATALOG $VERTICA_CONFIG $VERTICA_DATA
   chown -R dbadmin:verticadba "$VERTICA_DIR"
 
   chown dbadmin:verticadba /opt/vertica/config/admintools.conf
 }
 
+STOP_LOOP="false"
 trap "shut_down" SIGKILL SIGTERM SIGHUP SIGINT EXIT
 
 
